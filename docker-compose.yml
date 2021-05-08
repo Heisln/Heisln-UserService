@@ -20,11 +20,18 @@ services:
     restart: always
     networks:
       - heisln-net
-  heisln-currency-converter:
+  adminer:
+    image: adminer
+    depends_on:
+        - db
+    environment:
+        ADMINER_DEFAULT_DB_DRIVER: mysql
+        ADMINER_DEFAULT_DB_HOST: db
+        ADMINER_DEFAULT_DB_NAME: Heisln.Car.Db
+        ADMINER_DESIGN: flat
+        ADMINER_PLUGINS: tables-filter tinymce
     ports:
-      - 9000:80
-    image: 'deitsch/heisln-currency-converter'
-    container_name: 'heisln-currency-converter'
+        - 8001:8080
     networks:
       - heisln-net
   
