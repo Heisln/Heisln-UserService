@@ -17,59 +17,6 @@ namespace Heisln.Car.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64)
                 .HasAnnotation("ProductVersion", "5.0.5");
 
-            modelBuilder.Entity("Heisln.Car.Domain.Booking", b =>
-                {
-                    b.Property<byte[]>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("varbinary(16)");
-
-                    b.Property<byte[]>("CarId")
-                        .HasColumnType("varbinary(16)");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<byte[]>("UserId")
-                        .HasColumnType("varbinary(16)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CarId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Bookings");
-                });
-
-            modelBuilder.Entity("Heisln.Car.Domain.Car", b =>
-                {
-                    b.Property<byte[]>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("varbinary(16)");
-
-                    b.Property<string>("Brand")
-                        .HasColumnType("text");
-
-                    b.Property<double>("Consumption")
-                        .HasColumnType("double");
-
-                    b.Property<int>("Horsepower")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<double>("Priceperday")
-                        .HasColumnType("double");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Cars");
-                });
-
             modelBuilder.Entity("Heisln.Car.Domain.User", b =>
                 {
                     b.Property<byte[]>("Id")
@@ -96,20 +43,6 @@ namespace Heisln.Car.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Heisln.Car.Domain.Booking", b =>
-                {
-                    b.HasOne("Heisln.Car.Domain.Car", "Car")
-                        .WithMany()
-                        .HasForeignKey("CarId");
-
-                    b.HasOne("Heisln.Car.Domain.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Car");
-
-                    b.Navigation("User");
-                });
 #pragma warning restore 612, 618
         }
     }

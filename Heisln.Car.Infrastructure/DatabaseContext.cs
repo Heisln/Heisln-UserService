@@ -12,9 +12,6 @@ namespace Heisln.Car.Infrastructure
     {
         public DbSet<User> Users { get; set; }
 
-        public DbSet<Domain.Car> Cars { get; set; }
-
-        public DbSet<Booking> Bookings { get; set; }
 
         public DatabaseContext() : base()
         {
@@ -43,33 +40,6 @@ namespace Heisln.Car.Infrastructure
                 .Property(u => u.Birthday);
             modelBuilder.Entity<User>()
                 .Property("Password");
-
-            modelBuilder.Entity<Booking>()
-                .HasKey(a => a.Id);
-            modelBuilder.Entity<Booking>()
-                .HasOne(a => a.Car)
-                .WithMany();
-            modelBuilder.Entity<Booking>()
-                .HasOne(a => a.User)
-                .WithMany();
-            modelBuilder.Entity<Booking>()
-                .Property(a => a.StartDate);
-            modelBuilder.Entity<Booking>()
-                .Property(a => a.EndDate);
-
-            modelBuilder.Entity<Domain.Car>()
-               .HasKey(a => a.Id);
-            modelBuilder.Entity<Domain.Car>()
-                .Property(c => c.Brand);
-            modelBuilder.Entity<Domain.Car>()
-                .Property(a => a.Consumption);
-            modelBuilder.Entity<Domain.Car>()
-                .Property(a => a.Horsepower);
-            modelBuilder.Entity<Domain.Car>()
-                .Property(a => a.Name);
-            modelBuilder.Entity<Domain.Car>()
-                .Property(a => a.Priceperday);
-
         }
     }
 }
