@@ -139,8 +139,6 @@ namespace Heisln.Api
                         dbContext.Database.Migrate();
 
                         dbContext.Database.ExecuteSqlRaw("SET FOREIGN_KEY_CHECKS = 0;");
-                        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE Cars");
-                        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE Bookings");
                         dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE Users");
                         dbContext.Database.ExecuteSqlRaw("SET FOREIGN_KEY_CHECKS = 1;");
 
