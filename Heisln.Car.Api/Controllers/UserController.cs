@@ -28,7 +28,13 @@ namespace Heisln.Api.Controllers
         public async Task<AuthenticationResponse> RegistrateUser([FromBody] User newUser)
         {
             var result = await userOperationHandler.Register(newUser.Email, newUser.Password, newUser.FirstName, newUser.LastName, newUser.Birthday);
-            return new AuthenticationResponse() { Token = result } ;
+            return new AuthenticationResponse() { Token = result.Item1, UserId = result.Item2} ;
+        }
+
+        [HttpPost("edit")]
+        public async Task EditUser([FromBody] EditUser editUser)
+        {
+            await userOperationHandler.Edit(editUser.Id, editUser.Email, editUser.FirstName, editUser.LastName, editUser.Birthday);
         }
     }
 }

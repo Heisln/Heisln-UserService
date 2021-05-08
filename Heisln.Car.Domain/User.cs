@@ -9,15 +9,15 @@ namespace Heisln.Car.Domain
     {
         public readonly Guid Id;
 
-        public readonly string Email;
+        public string Email;
 
         public string Password { get; private set; }
 
-        public readonly string FirstName;
+        public string FirstName;
 
-        public string LastName { get; private set; }
+        public string LastName { get; set; }
 
-        public readonly DateTime Birthday;
+        public DateTime Birthday;
 
         public User(Guid id, string email, string password, string firstName, string lastName, DateTime birthday)
         {
