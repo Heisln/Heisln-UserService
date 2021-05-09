@@ -4,57 +4,51 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace Heisln.Car.Infrastructure
 {
     public class UserRepository : EntityFrameWorkRepository, IUserRepository
     {
-        public UserRepository(DatabaseContext dbContext) : base(dbContext)
+        public UserRepository(IMongoUserDbContext dbContext) : base(dbContext)
         {
         }
 
         public void Add(User entity)
         {
-            dbContext.Users.Add(entity);
+            dbContext.Users.InsertOne(entity);
         }
 
-        public async Task<User> GetAsync(string email, string password)
+        public User Get(string email, string password)
         {
-            var user = await dbContext.Users.SingleAsync(user => user.Email == email && user.Password == password);
+            var user = dbContext.Users.Find(u => u.Email == email && u.Password == password).First();
             return user;
         }
 
-        public async Task<User> GetAsync(Guid id)
+        public bool CheckIfUserAlreadyExists(string email)
         {
-            var user = await dbContext.Users.SingleAsync(user => user.Id == id);
+            return dbContext.Users.Find(u => u.Email == email).Any();
+        }
+
+        public User Get(Guid id)
+        {
+            var user = dbContext.Users.Find(u => u.Id == id).First();
             return user;
         }
 
-        public Task<IEnumerable<User>> GetAllAsync()
+        public void Update(User user)
         {
-            throw new NotImplementedException();
-        }
-
-        public void Remove(User entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Remove(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RemoveRange(IEnumerable<User> entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<int> SaveAsync()
-        {
-            return dbContext.SaveChangesAsync();
+            var update = Builders<User>.Update
+                                        .Set(nameof(user.Birthday), user.Birthday)
+                                        .Set(nameof(user.FirstName), user.FirstName)
+                                        .Set(nameof(user.LastName), user.LastName)
+                                        .Set(nameof(user.Email), user.Email);
+            var filter = Builders<User>.Filter.Eq("Id", user.Id);
+            dbContext.Users.UpdateOne(filter, update);
         }
     }
 }

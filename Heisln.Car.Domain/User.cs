@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Runtime.Serialization;
 using System.Text;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 
 namespace Heisln.Car.Domain
 {
     public class User
     {
-        public readonly Guid Id;
+        [BsonId]
+        public Guid Id;
 
         public string Email;
 

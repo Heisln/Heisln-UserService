@@ -19,7 +19,7 @@ namespace Heisln.Car.Application
 
         public async Task<(string, Guid)> Login(string email, string password)
         {
-            var user = await userRepository.GetAsync(email, password);
+            var user = userRepository.Get(email, password);
 
             var token = JWTTokenGenerator.CreateToken(user);
 
@@ -28,23 +28,26 @@ namespace Heisln.Car.Application
 
         public async Task<(string, Guid)> Register(string email, string password, string firstName, string lastName, DateTime birthday)
         {
+            if (userRepository.CheckIfUserAlreadyExists(email))
+            {
+                return ("",new Guid());
+            }
             var newUser = User.Create(email, password, firstName, lastName, birthday);
             userRepository.Add(newUser);
-            await userRepository.SaveAsync();
 
-            var user = await userRepository.GetAsync(email, password);
+            var user = userRepository.Get(email, password);
             var token = JWTTokenGenerator.CreateToken(user);
             return (token, user.Id);
         }
 
         public async Task Edit(Guid id, string email, string firstName, string lastName, DateTime birthday)
         {
-            var user = userRepository.GetAsync(id).Result;
+            var user = userRepository.Get(id);
             user.Email = email;
             user.FirstName = firstName;
             user.LastName = lastName;
             user.Birthday = birthday;
-            await userRepository.SaveAsync();
+            userRepository.Update(user);
         }
     }
 }

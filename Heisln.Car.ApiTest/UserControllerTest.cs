@@ -9,6 +9,7 @@ using Heisln.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using FluentAssertions;
 using System.Linq;
+using Microsoft.Extensions.Options;
 
 namespace Heisln.ApiTest
 {
@@ -17,12 +18,12 @@ namespace Heisln.ApiTest
         UserController userController;
         public UserControllerTest(DbContextFixture dbContextFixture)
         {
-            DatabaseContext databaseContext = dbContextFixture.DatabaseContext;
-            userController = new UserController(
-                new UserOperationHandler(
-                    userRepository: new UserRepository(databaseContext)
-                )
-            );
+            //DatabaseContext databaseContext = dbContextFixture.DatabaseContext;
+            //userController = new UserController(
+            //    new UserOperationHandler(
+            //        userRepository: new UserRepository(databaseContext)
+            //    )
+            //);
         }
 
         public static readonly IEnumerable<object[]> userInformation = new List<object[]>

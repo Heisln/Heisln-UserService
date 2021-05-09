@@ -13,6 +13,9 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Text;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
 
 namespace Heisln.Api
 {
@@ -93,10 +96,15 @@ namespace Heisln.Api
             services.AddScoped<IUserOperationHandler, UserOperationHandler>();
 
             //Configure Database
-            services.AddDbContext<DatabaseContext>(options =>
+            services.Configure<Mongosettings>(options =>
             {
-                options.UseMySQL(Configuration.GetSection("Database")["ConnectionString"]);
+                options.Connection = Configuration.GetSection("MongoSettings:Connection").Value;
+                options.DatabaseName = Configuration.GetSection("MongoSettings:DatabaseName").Value;
             });
+
+            services.AddScoped<IMongoUserDbContext, MongoUserDbContext>();
+            BsonDefaults.GuidRepresentationMode = GuidRepresentationMode.V2;
+            BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -124,39 +132,6 @@ namespace Heisln.Api
             });
 
             #region Seed_Test_Data
-            var scopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
-            using (var serviceScope = scopeFactory.CreateScope())
-            {
-                var databaseContext = serviceScope.ServiceProvider.GetRequiredService<DatabaseContext>();
-
-                if (true)
-                {
-                    var logger = serviceScope.ServiceProvider.GetRequiredService<ILogger<Startup>>();
-
-                    try
-                    {
-                        var dbContext = serviceScope.ServiceProvider.GetRequiredService<DatabaseContext>();
-                        dbContext.Database.Migrate();
-
-                        dbContext.Database.ExecuteSqlRaw("SET FOREIGN_KEY_CHECKS = 0;");
-                        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE Users");
-                        dbContext.Database.ExecuteSqlRaw("SET FOREIGN_KEY_CHECKS = 1;");
-
-
-                        var userA = new Car.Domain.User(Guid.NewGuid(), "mail@mail.test", "pwd", "Max", "Mustermann", DateTime.Today);
-                        var userB = new Car.Domain.User(Guid.NewGuid(), "mail1@mail.test", "pwd", "Sabine", "Sicher", DateTime.Today);
-
-                        var userRepository = serviceScope.ServiceProvider.GetRequiredService<IUserRepository>();
-                        userRepository.Add(userA);
-                        userRepository.Add(userB);
-                        userRepository.SaveAsync().Wait();
-                    }
-                    catch (Exception e)
-                    {
-                        logger.LogWarning(e, "Could not create test data!");
-                    }
-                }
-            }
             #endregion
         }
 

@@ -1,16 +1,15 @@
 ﻿using Heisln.Car.Domain;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Heisln.Car.Contract
 {
-    public interface IUserRepository : IRepository<User>
+    public interface IUserRepository
     {
         public static string Secret = "DH7ND98DDSA13210FDSEKFJFJF543KJCKKOP543FKOPFLPÜF543KFKJKLRIFIORKL6894829"; //Move to settings-file
-        Task<User> GetAsync(string username, string password);
-        Task<User> GetAsync(Guid id);
+        User Get(string username, string password);
+        User Get(Guid id);
+        void Add(User entity);
+        bool CheckIfUserAlreadyExists(string email);
+        void Update(User user);
     }
 }

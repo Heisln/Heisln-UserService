@@ -8,9 +8,9 @@ namespace Heisln.Car.Infrastructure
 {
     public abstract class EntityFrameWorkRepository
     {
-        protected DatabaseContext dbContext;
+        protected IMongoUserDbContext dbContext;
 
-        protected EntityFrameWorkRepository(DatabaseContext dbContext)
+        protected EntityFrameWorkRepository(IMongoUserDbContext dbContext)
         {
             this.dbContext = dbContext;
         }
