@@ -7,6 +7,8 @@ namespace Heisln.Car.Application
     {
         Task<(string, Guid)> Login(string username, string password);
 
-        Task<string> Register(string email, string password, string firstName, string lastName, DateTime birthday);
+        Task<(string, Guid)> Register(string email, string password, string firstName, string lastName, DateTime birthday);
+
+        Task Edit(Guid id, string email, string firstName, string lastName, DateTime birthday);
     }
 }
