@@ -105,6 +105,8 @@ namespace Heisln.Api
             services.AddScoped<IMongoUserDbContext, MongoUserDbContext>();
             BsonDefaults.GuidRepresentationMode = GuidRepresentationMode.V2;
             BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
+
+            services.AddHostedService<CarRentalServicesListener>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -130,6 +132,7 @@ namespace Heisln.Api
             {
                 endpoints.MapControllers();
             });
+
 
             #region Seed_Test_Data
             #endregion
