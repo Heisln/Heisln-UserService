@@ -1,11 +1,14 @@
 version: '3.4'
 
 services:
-  heisln.car.api:
-    image: ${DOCKER_REGISTRY-}heislncarapi
+  heisln.user.service:
+    image: ${DOCKER_REGISTRY-}heisln-userservice
+    container_name: heisln-userservice
     build:
       context: .
       dockerfile: Heisln.Car.Api/Dockerfile
+    ports:
+      - "9001:80"
     networks:
       - heisln-net
     depends_on:
@@ -13,16 +16,11 @@ services:
       - mongo
   mongo:
     image: mongo
+    container_name: mongo
     ports:
       - 27017:27017
     networks:
       - heisln-net
-  mongo-express:
-    image: mongo-express
-    ports:
-      - 8081:8081
-    depends_on:
-      - mongo
   rabbitmq:
     image: rabbitmq
     build:
@@ -37,7 +35,7 @@ services:
     hostname: rabbitmq
     environment:   
         - RABBITMQ_USER=test
-        - RABBITMQ_PASS=test
+        - RABBITMQ_PASSWORD=test
   
 networks:
   heisln-net:

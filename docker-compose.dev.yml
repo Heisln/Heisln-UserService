@@ -1,53 +1,45 @@
 version: '3.4'
 
 services:
-  heisln.car.api:
-    image: ${DOCKER_REGISTRY-}heislncarapi
+  heisln.user.service:
+    image: ${DOCKER_REGISTRY-}heisln-userService
     build:
       context: .
       dockerfile: Heisln.Car.Api/Dockerfile
     ports:
-      - "8000:80"
+      - "9001:80"
+    networks:
+      - heisln-net
     depends_on:
-      - db
+      - rabbitmq
+      - mongo
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     restart: always
-    networks:
-      - heisln-net
-  db:
-    image: mysql:8.0.23
+
+  mongo:
+    image: mongo
     ports:
-        - 3306:3306
-    environment:
-        MYSQL_ROOT_PASSWORD: qwertzuio
-        MYSQL_USER: test
-        MYSQL_PASSWORD: pass@word1234
-        MYSQL_DATABASE: Heisln.Car.Db
-    restart: always
+      - 27017:27017
     networks:
       - heisln-net
-  adminer:
-    image: adminer
-    depends_on:
-        - db
-    environment:
-        ADMINER_DEFAULT_DB_DRIVER: mysql
-        ADMINER_DEFAULT_DB_HOST: db
-        ADMINER_DEFAULT_DB_NAME: Heisln.Car.Db
-        ADMINER_DESIGN: flat
-        ADMINER_PLUGINS: tables-filter tinymce
+
+  rabbitmq:
+    image: rabbitmq
+    build:
+      context: .
+      dockerfile: ./RabbitMq/Dockerfile
+    networks:
+      - heisln-net
+    container_name: rabbitmq
     ports:
-        - 8001:8080
-    networks:
-      - heisln-net
-  heisln-currency-converter:
-    ports:
-      - 9000:80
-    image: 'deitsch/heisln-currency-converter'
-    container_name: 'heisln-currency-converter'
-    networks:
-      - heisln-net
+      - 15672:15672
+      - 5672:5672
+    hostname: rabbitmq
+    environment:   
+        - RABBITMQ_USER=test
+        - RABBITMQ_PASSWORD=test   
+
   
 networks:
   heisln-net:
