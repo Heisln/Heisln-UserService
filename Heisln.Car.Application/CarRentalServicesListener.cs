@@ -37,38 +37,39 @@ namespace Heisln.Car.Infrastructure
             var consumer = new EventingBasicConsumer(channel);
             channel.BasicConsume(queue: "rpc_queue",
               autoAck: false, consumer: consumer);
-            Console.WriteLine(" [x] Awaiting RPC requests");
 
-            consumer.Received += (model, ea) =>
-            {
-                string response = null;
+                Console.WriteLine(" [x] Awaiting RPC requests");
 
-                var body = ea.Body.ToArray();
-                var props = ea.BasicProperties;
-                var replyProps = channel.CreateBasicProperties();
-                replyProps.CorrelationId = props.CorrelationId;
+                consumer.Received += (model, ea) =>
+                {
+                    string response = null;
 
-                try
-                {
-                    var message = Encoding.UTF8.GetString(body);
-                    var result = HandleRequest(message);
-                    Console.WriteLine(response);
-                    response = result;
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(" [.] " + e.Message);
-                    response = "";
-                }
-                finally
-                {
-                    var responseBytes = Encoding.UTF8.GetBytes(response);
-                    channel.BasicPublish(exchange: "", routingKey: props.ReplyTo,
-                      basicProperties: replyProps, body: responseBytes);
-                    channel.BasicAck(deliveryTag: ea.DeliveryTag,
-                      multiple: false);
-                }
-            };
+                    var body = ea.Body.ToArray();
+                    var props = ea.BasicProperties;
+                    var replyProps = channel.CreateBasicProperties();
+                    replyProps.CorrelationId = props.CorrelationId;
+
+                    try
+                    {
+                        var message = Encoding.UTF8.GetString(body);
+                        var result = HandleRequest(message);
+                        Console.WriteLine(response);
+                        response = result;
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(" [.] " + e.Message);
+                        response = "";
+                    }
+                    finally
+                    {
+                        var responseBytes = Encoding.UTF8.GetBytes(response);
+                        channel.BasicPublish(exchange: "", routingKey: props.ReplyTo,
+                          basicProperties: replyProps, body: responseBytes);
+                        channel.BasicAck(deliveryTag: ea.DeliveryTag,
+                          multiple: false);
+                    }
+                };
 
             Console.WriteLine(" Press [enter] to exit.");
             return Task.CompletedTask;
