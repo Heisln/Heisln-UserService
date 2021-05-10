@@ -23,7 +23,7 @@ namespace Heisln.Car.Infrastructure
 
         public CarRentalServicesListener(IServiceScopeFactory serviceScopeFactory)
         {
-            var factory = new ConnectionFactory() { HostName = "rabbitmq", UserName="test", Password="user" };
+            var factory = new ConnectionFactory() { HostName = "rabbitmq", UserName="test", Password="test" };
             connection = factory.CreateConnection();
             channel = connection.CreateModel();
             this.serviceScopeFactory = serviceScopeFactory;

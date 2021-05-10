@@ -37,7 +37,7 @@ services:
     hostname: rabbitmq
     environment:   
         - RABBITMQ_USER=test
-        - RABBITMQ_PASS=test
+        - RABBITMQ_PASSWORD=test
   
 networks:
   heisln-net:
