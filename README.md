@@ -1,6 +1,6 @@
-![dockerhub](https://github.com/Heisln/Heisln-UserService/actions/workflows/container.yml/badge.svg)
+![dockerhub](https://github.com/Heisln/Heisln-CarRentalService/actions/workflows/container.yml/badge.svg)
 
-# Dockerized .NET Core Heisln User Service
+# Dockerized .NET Core Heisln CarrentalService
 
 ## Backend Development
 
@@ -8,8 +8,8 @@
 * Install an IDE (preferably Visual Studio or Visual Studio Code)
 
 ```sh
-git clone https://github.com/Heisln/Heisln-UserService.git
-cd Heisln-UserService
+git clone https://github.com/Heisln/Heisln-CarRentalService.git
+cd Heisln-CarRentalService
 ```
 
 ### Swagger Open Api Documentation
