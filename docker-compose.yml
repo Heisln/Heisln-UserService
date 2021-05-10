@@ -24,7 +24,7 @@ services:
       - heisln-net
 
   rabbitmq:
-    image: ${DOCKER_REGISTRY-}rabbitmq
+    image: deitsch/rabbitmq
     container_name: rabbitmq
     networks:
       - heisln-net

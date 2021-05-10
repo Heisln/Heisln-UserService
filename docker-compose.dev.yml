@@ -26,18 +26,6 @@ services:
     networks:
       - heisln-net
 
-  rabbitmq:
-    image: ${DOCKER_REGISTRY-}rabbitmq
-    container_name: rabbitmq
-    networks:
-      - heisln-net
-    ports:
-      - 15672:15672
-      - 5672:5672
-    environment:   
-      - RABBITMQ_USER=test
-      - RABBITMQ_PASSWORD=test
-
 networks:
   heisln-net:
     external: true
