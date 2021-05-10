@@ -14,6 +14,7 @@ services:
     depends_on:
       - rabbitmq
       - mongo
+
   mongo:
     image: mongo
     container_name: mongo
@@ -21,21 +22,18 @@ services:
       - 27017:27017
     networks:
       - heisln-net
+
   rabbitmq:
-    image: rabbitmq
-    build:
-      context: .
-      dockerfile: ./RabbitMq/Dockerfile
+    image: deitsch/rabbitmq
+    container_name: rabbitmq
     networks:
       - heisln-net
-    container_name: rabbitmq
     ports:
       - 15672:15672
       - 5672:5672
-    hostname: rabbitmq
     environment:   
-        - RABBITMQ_USER=test
-        - RABBITMQ_PASSWORD=test
+      - RABBITMQ_USER=test
+      - RABBITMQ_PASSWORD=test 
   
 networks:
   heisln-net:
