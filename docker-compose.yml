@@ -2,7 +2,8 @@ version: '3.4'
 
 services:
   heisln.user.service:
-    image: ${DOCKER_REGISTRY-}heisln-userService
+    image: ${DOCKER_REGISTRY-}heisln-userservice
+    container_name: heisln-userservice
     build:
       context: .
       dockerfile: Heisln.Car.Api/Dockerfile
@@ -15,6 +16,7 @@ services:
       - mongo
   mongo:
     image: mongo
+    container_name: mongo
     ports:
       - 27017:27017
     networks:
