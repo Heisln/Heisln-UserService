@@ -9,21 +9,35 @@ services:
     networks:
       - heisln-net
     depends_on:
+      - rabbitmq
       - mongo
   mongo:
     image: mongo
-    restart: always
     ports:
       - 27017:27017
     networks:
       - heisln-net
   mongo-express:
     image: mongo-express
-    restart: always
     ports:
       - 8081:8081
     depends_on:
       - mongo
+  rabbitmq:
+    image: rabbitmq
+    build:
+      context: .
+      dockerfile: ./RabbitMq/Dockerfile
+    networks:
+      - heisln-net
+    container_name: rabbitmq
+    ports:
+      - 15672:15672
+      - 5672:5672
+    hostname: rabbitmq
+    environment:   
+        - RABBITMQ_USER=test
+        - RABBITMQ_PASS=test
   
 networks:
   heisln-net:
