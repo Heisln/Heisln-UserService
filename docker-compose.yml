@@ -25,15 +25,15 @@ services:
 
   rabbitmq:
     image: ${DOCKER_REGISTRY-}rabbitmq
+    container_name: rabbitmq
     networks:
       - heisln-net
-    container_name: rabbitmq
     ports:
       - 15672:15672
       - 5672:5672
     environment:   
-        - RABBITMQ_USER=test
-        - RABBITMQ_PASSWORD=test
+      - RABBITMQ_USER=test
+      - RABBITMQ_PASSWORD=test 
   
 networks:
   heisln-net:
