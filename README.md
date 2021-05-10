@@ -2,7 +2,7 @@
 
 # Dockerized .NET Core Heisln User Service
 
-## Backend Development
+## Development setup
 
 * Install dotnet5 
 * Install an IDE (preferably Visual Studio or Visual Studio Code)
@@ -12,10 +12,6 @@ git clone https://github.com/Heisln/Heisln-UserService.git
 cd Heisln-UserService
 ```
 
-### Swagger Open Api Documentation
+## Swagger Open Api Documentation
 
-To access the Swagger Doc navigate to [http://localhost:8000/swagger](http://localhost:8000/swagger) while running the project
-
-## Frontend Development
-
-For Frontend development purpose you may run `docker-compose -f docker-compose.dev.yml up` to start the backend exposin
+To access the Swagger Doc navigate to [http://localhost:9001/swagger](http://localhost:9001/swagger) while running the project
