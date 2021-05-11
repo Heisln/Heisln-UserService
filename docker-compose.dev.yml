@@ -12,7 +12,6 @@ services:
     networks:
       - heisln-net
     depends_on:
-      - rabbitmq
       - mongo
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
